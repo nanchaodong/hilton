@@ -26,7 +26,7 @@ fun Detail(pokemonUi: PokemonUi, back: () -> Unit) {
                 modifier = Modifier.clickable(onClick = back)
             )
         })
-        Text("name: pokemonUi.name")
+        Text("name: ${pokemonUi.name}")
         if (pokemonUi.abilities.isNotEmpty()) {
             Text("abilities:")
             pokemonUi.abilities.forEach {
