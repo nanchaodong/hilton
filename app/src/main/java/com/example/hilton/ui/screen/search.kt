@@ -4,9 +4,11 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -97,6 +99,9 @@ fun Success(pokemons: List<PokemonUi>, toDetail: (PokemonUi) -> Unit) {
                     Text("capture rate: ${it.captureRate}")
                     HorizontalDivider()
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.imePadding())
             }
         }
     }
