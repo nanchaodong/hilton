@@ -22,8 +22,12 @@ data class PokemonDomain(
 
 private class SearchServiceImpl(private val netWorkUseCase: NetWorkUseCase<ApolloClient>) :
     SearchService {
+    private val url = "https://beta.pokeapi.co/graphql/v1beta"// this can be set in a configure file
     override suspend fun request(query: String): List<PokemonDomain> {
-        return netWorkUseCase.query(PokemonQuery(query)).pokemon_v2_pokemonspecies.map {
+        return netWorkUseCase.query(
+            PokemonQuery(query),
+            url
+        ).pokemon_v2_pokemonspecies.map {
             PokemonDomain(name = it.name,
                 captureRate = "${it.capture_rate}%",
                 color = it.pokemon_v2_pokemoncolor?.name.orEmpty(),
