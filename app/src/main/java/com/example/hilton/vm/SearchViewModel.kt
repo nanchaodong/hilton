@@ -5,7 +5,8 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hilton.domain.PokemonDomain
-import com.example.hilton.domain.createSearchUseCase
+import com.example.hilton.domain.SearchUseCase
+import com.example.hilton.domain.UseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -63,8 +64,8 @@ class SearchViewModel : ViewModel() {
     private val _result = MutableStateFlow<SearchResultState>(SearchResultState.Init)
     val result: Flow<SearchResultState>
         get() = _result
-    private val useCase by lazy {
-        createSearchUseCase()
+    private val useCase: SearchUseCase by lazy {
+        UseCase.get()
     }
 
     init {

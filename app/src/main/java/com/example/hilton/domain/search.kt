@@ -20,7 +20,7 @@ data class PokemonDomain(
 )
 
 
-private class SearchServiceImpl(private val netWorkUseCase: NetWorkUseCase<ApolloClient>) :
+private class SearchServiceImpl(private val netWorkUseCase: ApolloUseCase) :
     SearchService {
     private val url = "https://beta.pokeapi.co/graphql/v1beta"// this can be set in a configure file
     override suspend fun request(query: String): List<PokemonDomain> {
@@ -51,23 +51,20 @@ private class SearchRepositoryImpl(private val service: SearchService) : SearchR
     }
 }
 
-private class SearchUseCaseImpl(private val repository: SearchRepository) : SearchUseCase {
+class SearchUseCaseImpl : SearchUseCase {
+    private val repository: SearchRepository =
+        SearchRepositoryImpl(
+            SearchServiceImpl(
+                UseCase.get()
+            )
+        )
+
     override suspend fun request(query: String): List<PokemonDomain> {
         return repository.request(query)
     }
 }
 
-private val defaultSearchUseCase: SearchUseCase by lazy {
-    SearchUseCaseImpl(
-        SearchRepositoryImpl(
-            SearchServiceImpl(
-                createNetWorkUseCase<ApolloClient>()
-            )
-        )
-    )
-}
 
-fun createSearchUseCase(searchUseCase: SearchUseCase = defaultSearchUseCase) = searchUseCase
 
 
 

@@ -10,16 +10,11 @@ import com.apollographql.apollo.api.http.HttpResponse
 import com.apollographql.apollo.network.http.HttpInterceptor
 import com.apollographql.apollo.network.http.HttpInterceptorChain
 
-interface NetWorkUseCase<T> {
-    val tool: T
+interface ApolloUseCase : StrongType {
+    val tool: ApolloClient
 }
 
-private class NetWorkUseCaseImpl(
-    override val tool: ApolloClient
-) : NetWorkUseCase<ApolloClient>
-
-const val ENDPOINT = "api-url"
-suspend inline fun <reified T : Query.Data> NetWorkUseCase<ApolloClient>.query(
+suspend inline fun <reified T : Query.Data> ApolloUseCase.query(
     t: Query<T>,
     url: String
 ): T {
@@ -33,9 +28,9 @@ suspend inline fun <reified T : Query.Data> NetWorkUseCase<ApolloClient>.query(
     }
 }
 
-val defaultWorkUseCase: NetWorkUseCase<ApolloClient> by lazy {
-    NetWorkUseCaseImpl(
-        tool = ApolloClient.Builder()
+class ApolloUseCaseImpl : ApolloUseCase {
+    override val tool: ApolloClient by lazy {
+        ApolloClient.Builder()
             .serverUrl("https://www.placeholder.com")
             .addHttpInterceptor(object : HttpInterceptor {
                 // only use one apollo client for all request through this interceptor
@@ -54,15 +49,9 @@ val defaultWorkUseCase: NetWorkUseCase<ApolloClient> by lazy {
 
             })
             .build()
-    )
+    }
 }
 
-inline fun <reified T> createNetWorkUseCase(useCase: NetWorkUseCase<T>? = null): NetWorkUseCase<T> {
-    return useCase
-        ?: if (defaultWorkUseCase.tool is T) {
-            defaultWorkUseCase as NetWorkUseCase<T>
-        } else {
-            error("please provide valid use case in parameter")
-        }
-}
+const val ENDPOINT = "api-url"
+
 
