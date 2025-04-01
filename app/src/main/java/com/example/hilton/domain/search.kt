@@ -1,6 +1,5 @@
 package com.example.hilton.domain
 
-import com.apollographql.apollo.ApolloClient
 import com.example.PokemonQuery
 
 interface SearchUseCase {
