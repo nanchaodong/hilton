@@ -58,6 +58,7 @@ class UseCaseTest {
             System.gc()
             Runtime.getRuntime().gc()
             Thread.sleep(3000)
+            UseCase.clear()
             assertTrue {
                 UseCase.get<TestUseCase>().get() == 1
             }
@@ -73,6 +74,7 @@ class UseCaseTest {
             System.gc()
             Runtime.getRuntime().gc()
             Thread.sleep(3000)
+            UseCase.clear()
             assertTrue {
                 UseCase.get<AnotherTestUseCase>().get() == 1
             }
@@ -101,6 +103,7 @@ class UseCaseTest {
             System.gc()
             Runtime.getRuntime().gc()
             Thread.sleep(3000)
+            UseCase.clear()
             assertTrue {
                 UseCase.getBy<TestUseCase> {
                     this !is StrongType
