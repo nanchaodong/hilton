@@ -56,12 +56,19 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose.android)
     implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
+//    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+//    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+//    implementation("io.ktor:ktor-client-core:3.1.1")
+//    implementation("io.ktor:ktor-client-cio:3.1.1")
+    testImplementation("com.apollographql.apollo:apollo-testing-support:4.1.1")
 }
 apollo {
     service("service") {

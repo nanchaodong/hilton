@@ -94,9 +94,9 @@ object UseCase {
     }
 
     fun <T : Any> saveAndGet(kClass: KClass<T>): T? {
-        return saveAllReferences(kClass).firstOrNull {
+        return saveAllReferences(kClass).first {
             it.key() != null
-        }?.run {
+        }.run {
             when (this) {
                 is Reference.Strong -> value as T
                 is Reference.Weak -> value.get() as? T

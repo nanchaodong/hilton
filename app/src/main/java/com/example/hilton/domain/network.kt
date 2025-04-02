@@ -28,26 +28,27 @@ suspend inline fun <reified T : Query.Data> ApolloUseCase.query(
     }
 }
 
+class RequestConvertorInterceptor : HttpInterceptor {
+    override suspend fun intercept(
+        request: HttpRequest,
+        chain: HttpInterceptorChain
+    ): HttpResponse {
+        val headers = request.headers.toMutableList()
+        val header = headers.first { it.name == ENDPOINT }
+        headers.removeIf { it.name == ENDPOINT }
+        val newRequest = request.newBuilder(url = header.value)
+            .headers(headers)
+            .build()
+        return chain.proceed(newRequest)
+    }
+
+}
+
 class ApolloUseCaseImpl : ApolloUseCase {
     override val tool: ApolloClient by lazy {
         ApolloClient.Builder()
             .serverUrl("https://www.placeholder.com")
-            .addHttpInterceptor(object : HttpInterceptor {
-                // only use one apollo client for all request through this interceptor
-                override suspend fun intercept(
-                    request: HttpRequest,
-                    chain: HttpInterceptorChain
-                ): HttpResponse {
-                    val headers = request.headers.toMutableList()
-                    val header = headers.first { it.name == ENDPOINT }
-                    headers.removeIf { it.name == ENDPOINT }
-                    val newRequest = request.newBuilder(url = header.value)
-                        .headers(headers)
-                        .build()
-                    return chain.proceed(newRequest)
-                }
-
-            })
+            .addHttpInterceptor(RequestConvertorInterceptor())
             .build()
     }
 }
