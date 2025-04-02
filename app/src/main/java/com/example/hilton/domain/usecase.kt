@@ -158,5 +158,6 @@ object UseCase {
         keys.forEach {
             map.remove(it)
         }
+        count = 0
     }
 }
